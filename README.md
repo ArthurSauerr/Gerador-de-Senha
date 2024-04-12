@@ -13,6 +13,7 @@ O projeto foi realizado para fins de estudo, como atividade avaliativa para a di
 - Geração de senhas aleatórias com 10 caracteres.
 - Possibilidade de gerar quantas senhas quiser.
 - Copiar a senha para a área de transferência do aparelho.
+- Navegação para a tela de histórico de senhas geradas.
 
 ## Capturas de Tela
 
