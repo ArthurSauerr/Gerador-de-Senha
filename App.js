@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   Pressable:{
     backgroundColor: '#2b004a',
     borderRadius: 5,
-    width: 250,
+    width: '80%',
     padding: 10,
     marginTop: 10,
   },
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
     padding: 10,
-    minWidth: 250,
-    maxWidth: 250
+    minWidth: '80%',
+    maxWidth: '80%'
   }
 });
