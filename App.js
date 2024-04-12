@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Pressable, StyleSheet, Text, View, Image, TextInput } from 'react-native';
+import { Pressable, StyleSheet, Text, View, Image, TextInput, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Clipboard from 'expo-clipboard';
+import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useState } from 'react';
 
 let senha = require('randomstring');
 
@@ -15,25 +17,26 @@ function gerarSenhaAleatoria() {
 
 export default function App() {
   const [senhaGerada, setSenhaGerada] = useState('');
-  const [copiado, setCopiado] = useState(false);
+  let [listaSenhas, setListaSenhas] = useState([]);
 
   const pressGerar = () => {
     const novaSenha = gerarSenhaAleatoria();
     setSenhaGerada(novaSenha);
-    setCopiado(false)
+    setListaSenhas(listaSenhas += senhaGerada)
+    console.log(listaSenhas);
   };
 
   const copyToClipboard = async () => {
     try {
       await Clipboard.setString(senhaGerada);
-      setCopiado(true);
     } catch (error) {
       console.error('Erro ao copiar para a área de transferência:', error);
     }
   };
 
-  return (
-    <LinearGradient
+  function HomeScreen({ navigation }) {
+    return (
+      <LinearGradient
       colors={['#fff', '#fff', '#2b004a']}
       style={styles.container}>
       <View style={styles.content}>
@@ -55,9 +58,44 @@ export default function App() {
         <Pressable style={styles.Pressable}> 
           <Text style={styles.Text} onPress={copyToClipboard}> COPIAR </Text>
         </Pressable>
+        <Pressable style={styles.Pressable}> 
+          <Text style={styles.Text} onPress={() => navigation.navigate('Histórico de senhas')}> HISTÓRICO </Text>
+        </Pressable>
         <StatusBar style="auto" />
       </View>
     </LinearGradient>
+    );
+  }
+
+  function HistoricoScreen() {
+    return (
+      <LinearGradient
+      colors={['#fff', '#fff', '#2b004a']}
+      style={styles.container}>
+      <View style={styles.content}>
+        <Text style={styles.TextTitle}> HISTÓRICO DE SENHAS </Text>
+        <TextInput
+        style={styles.TextInput}
+        readOnly={true}
+        value={listaSenhas}/>
+        
+        <Pressable style={styles.Pressable}>
+          <Text style={styles.Text}> LIMPAR </Text>
+        </Pressable>
+      </View>
+    </LinearGradient>
+    );
+  }
+
+  const Stack = createNativeStackNavigator();
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="Histórico de senhas" component={HistoricoScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
